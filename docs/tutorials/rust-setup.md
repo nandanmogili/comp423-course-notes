@@ -1,191 +1,153 @@
 # Setting up a Dev Container for Rust
-
 * Primary author: [Nandan Mogili](https://github.com/nandanmogili)
 
 
-Welcome to this tutorial on setting up a basic Rust project from scratch. Whether you're new to Rust or looking to refresh your setup process, this guide will walk you through each step to get your development environment up and running efficiently.
 
-## Table of Contents
+Welcome to this step-by-step guide on setting up a basic **Rust** project from scratch. Whether you’re a complete beginner or looking to structure your environment more efficiently, this tutorial will walk you through every essential step—from creating a Git repository to compiling and running a _Hello World_ example.
 
-1. [Introduction](#introduction)
-2. [Prerequisites](#prerequisites)
-3. [1. Git Repository Setup](#1-git-repository-setup)
-4. [2. Dev Container Setup](#2-dev-container-setup)
-5. [3. Initialize a Rust Project](#3-initialize-a-rust-project)
-6. [4. Add a Hello World Example](#4-add-a-hello-world-example)
-7. [5. Compile and Run](#5-compile-and-run)
-8. [Conclusion](#conclusion)
+---
+
+1. [Introduction](#introduction)  
+2. [Prerequisites](#prerequisites)  
+3. [Git Repository Setup](#git-repository-setup)  
+4. [Dev Container Setup](#dev-container-setup)  
+5. [Initialize a Rust Project](#initialize-a-rust-project)  
+6. [Add a Hello World Example](#add-a-hello-world-example)  
+7. [Compile and Run](#compile-and-run)  
+
 
 ---
 
 ## Introduction
 
-Rust is a systems programming language known for its performance, reliability, and memory safety. Setting up a Rust project involves configuring your development environment, initializing a new project, and writing your first program. This tutorial covers the essential steps to help you get started quickly.
+Rust is a modern systems programming language designed for speed, safety, and concurrency. By following this guide, you’ll learn how to:
 
-## Prerequisites
-
-Before diving into the setup, ensure you have the following installed on your machine:
-
-- **Git**: Version control system.
-- **Visual Studio Code (VS Code)**: A popular code editor.
-- **Docker**: For setting up development containers.
-- **Rust**: The Rust programming language and Cargo package manager.
-
-If you haven't installed these tools yet, please refer to their official installation guides:
-
-- [Git Installation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- [VS Code Installation](https://code.visualstudio.com/docs/setup/setup-overview)
-- [Docker Installation](https://docs.docker.com/get-docker/)
-- [Rust Installation](https://www.rust-lang.org/tools/install)
+- Set up a Git repo for version control  
+- Configure a development container using Docker and VS Code  
+- Initialize a new Rust project
+- Add and run a simple _Hello World_ program  
 
 ---
 
-## 1. Git Repository Setup
+## Prerequisites
 
-Setting up a Git repository allows you to track changes, collaborate with others, and maintain version control for your project.
+Before you begin, make sure you have the following:
 
-### Steps:
+1. **Git** – for version control   
+2. **Visual Studio Code (VS Code)** – a code editor with Dev Container support  
+3. **Docker** – to run your Dev Container  
+4. **Rust** – the Rust toolchain, including Cargo  
 
-1. **Create a New Directory for Your Project:**
+
+[VS Code Installation](https://code.visualstudio.com/docs/setup/setup-overview)  
+[Docker Installation](https://docs.docker.com/get-docker/)  
+[Rust Installation](https://www.rust-lang.org/tools/install)
+
+---
+
+## Git Repository Setup
+
+Version control is essential for managing changes to your project’s codebase. Let’s start by creating a Git repository.
+
+1. **Create a new directory:**
 
     ```bash
-    mkdir rust-hello-world
-    cd rust-hello-world
+    mkdir rust-project
+    cd rust-project
     ```
 
-2. **Initialize Git Repository:**
+2. **Initialize the repository:**
 
     ```bash
     git init
     ```
 
-3. **Create a `.gitignore` File:**
-
-    It's good practice to exclude certain files and directories from version control. Create a `.gitignore` file with the following content:
-
-    ```gitignore
-    # Rust/Cargo
-    /target
-    **/*.rs.bk
-
-    # IDEs
-    .vscode/
-    *.code-workspace
-
-    # OS Files
-    .DS_Store
-    ```
+3. **Create a `.gitignore` file:**  
+   Exclude files and directories you don’t want under source control:
 
     ```bash
-    echo "/target\n**/*.rs.bk\n.vscode/\n*.code-workspace\n.DS_Store" > .gitignore
+    echo "/target\n**/*.rs.bk\n.vscode\n*.code-workspace\n.DS_Store" > .gitignore
     ```
 
-4. **Commit Initial Setup:**
+4. **Commit the setup:**
 
     ```bash
     git add .
-    git commit -m "Initial Git repository setup with .gitignore"
+    git commit -m "Initial commit: setup Git repository with .gitignore"
     ```
 
 ---
 
-## 2. Dev Container Setup
+## Dev Container Setup
 
-Using a development container ensures a consistent development environment across different machines, making collaboration smoother.
+A *development container* ensures a consistent environment for your project, regardless of the host machine. In VS Code, we can use the **Remote - Containers** extension to manage this.
 
-### Steps:
+1. **Install the Remote - Containers extension:**
+   - Open VS Code  
+   - Go to Extensions (View → Extensions or <kbd>Ctrl+Shift+X</kbd>/<kbd>Cmd+Shift+X</kbd>)  
+   - Search for “Remote - Containers” and install it  
 
-1. **Install the Remote - Containers Extension in VS Code:**
-
-    - Open VS Code.
-    - Go to the Extensions view (`Ctrl+Shift+X` or `Cmd+Shift+X`).
-    - Search for "Remote - Containers" and install it.
-
-2. **Create a `.devcontainer` Directory:**
+2. **Create a `.devcontainer` folder:**
 
     ```bash
     mkdir .devcontainer
     cd .devcontainer
     ```
 
-3. **Create a `devcontainer.json` File:**
+3. **Add `devcontainer.json`:**  
+   This file tells VS Code how to configure and launch your container.
 
     ```json
     {
-        "name": "Rust Dev Container",
-        "image": "rust:latest",
-        "extensions": [
-            "rust-lang.rust-analyzer",
-            "ms-vscode.cpptools"
-        ],
-        "settings": {
-            "terminal.integrated.shell.linux": "/bin/bash"
-        },
-        "postCreateCommand": "rustup component add rustfmt clippy"
+      "name": "Rust Dev Container",
+      "image": "rust:latest",
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "ms-vscode.cpptools"
+      ],
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "postCreateCommand": "rustup component add rustfmt clippy"
     }
     ```
 
-    ```bash
-    cat > devcontainer.json <<EOL
-    {
-        "name": "Rust Dev Container",
-        "image": "rust:latest",
-        "extensions": [
-            "rust-lang.rust-analyzer",
-            "ms-vscode.cpptools"
-        ],
-        "settings": {
-            "terminal.integrated.shell.linux": "/bin/bash"
-        },
-        "postCreateCommand": "rustup component add rustfmt clippy"
-    }
-    EOL
-    ```
-
-4. **Reopen the Project in the Dev Container:**
-
-    - Press `F1` in VS Code.
-    - Type `Remote-Containers: Reopen in Container` and select it.
-    - Wait for the container to build and open.
+4. **Reopen project in container:**  
+   - Press <kbd>F1</kbd> in VS Code  
+   - Type `Remote-Containers: Reopen in Container`  
+   - Wait for the container to build  
 
 ---
 
-## 3. Initialize a Rust Project
+## Initialize a Rust Project
 
-With your environment set up, it's time to initialize a new Rust project using Cargo, Rust's package manager and build system.
+Once your container is running (or if you’re skipping the container step, on your local machine):
 
-### Steps:
-
-1. **Initialize a New Cargo Project:**
+1. **Initialize a Cargo project:**
 
     ```bash
-    cargo new hello_world
-    cd hello_world
+    cargo new hello_rust
+    cd hello_rust
     ```
 
-    This command creates a new directory `hello_world` with the basic structure of a Rust project.
+2. **Project structure overview:**  
+   - **Cargo.toml** – project configuration  
+   - **src/main.rs** – entry point for your Rust code  
 
-2. **Explore the Project Structure:**
-
-    - `Cargo.toml`: Configuration file for your project.
-    - `src/main.rs`: The main source file.
-
-3. **Commit the Initialized Project:**
+3. **Commit the new project:**
 
     ```bash
     git add .
-    git commit -m "Initialize new Rust project with Cargo"
+    git commit -m "Initialize Rust project using Cargo"
     ```
 
 ---
 
-## 4. Add a Hello World Example
+## Add a Hello World Example
 
-Let's create a simple "Hello, World!" program to verify that everything is set up correctly.
+Let’s create a basic _Hello World_ program to test the setup.
 
-### Steps:
-
-1. **Open `src/main.rs` in VS Code:**
+1. **Open `src/main.rs`:**
 
     ```rust
     fn main() {
@@ -193,81 +155,51 @@ Let's create a simple "Hello, World!" program to verify that everything is set u
     }
     ```
 
-    Replace the existing content with the above code if it's not already there.
-
-2. **Format the Code (Optional):**
-
-    Rust provides a tool called `rustfmt` to format your code consistently.
+2. **Format and lint code (optional but recommended):**
 
     ```bash
     cargo fmt
-    ```
-
-3. **Lint the Code (Optional):**
-
-    Use `clippy` to catch common mistakes and improve your code.
-
-    ```bash
     cargo clippy
     ```
 
-4. **Commit the Hello World Example:**
+3. **Commit changes:**
 
     ```bash
     git add src/main.rs
-    git commit -m "Add Hello, World! example"
+    git commit -m "Add Hello World example"
     ```
 
 ---
 
-## 5. Compile and Run
+## Compile and Run
 
-Now, let's compile and run your Rust program to see it in action.
+Time for the exciting part—building and running your Rust code.
 
-### Steps:
-
-1. **Compile the Project:**
+1. **Compile the project:**
 
     ```bash
     cargo build
     ```
 
-    This command compiles your project and generates an executable in the `target/debug` directory.
+    !!! note
+        The compiled output goes to `target/debug/hello_rust` by default.
 
-2. **Run the Project:**
+2. **Run the project:**
 
     ```bash
     cargo run
     ```
 
-    **Expected Output:**
+    **Expected output:**
 
     ```
-    Compiling hello_world v0.1.0 (/path/to/your/project/hello_world)
+    Compiling hello_rust v0.1.0 (/workspaces/rust-project/hello_rust)
      Finished dev [unoptimized + debuginfo] target(s) in 2.34s
-      Running `target/debug/hello_world`
+      Running `target/debug/hello_rust`
     Hello, World!
     ```
 
-3. **Verify the Output:**
-
-    You should see the message `Hello, World!` printed in your terminal, confirming that your Rust project is set up correctly.
-
----
-
-## Conclusion
-
-Congratulations! You've successfully set up a basic Rust project from scratch. Here's a quick recap of what you've accomplished:
-
-- **Git Repository Setup:** Initialized version control to manage your project's history.
-- **Dev Container Setup:** Configured a consistent development environment using Docker and VS Code.
-- **Initialize a Rust Project:** Created a new Rust project using Cargo.
-- **Add a Hello World Example:** Wrote a simple Rust program to verify your setup.
-- **Compile and Run:** Built and executed your Rust program successfully.
-
-With this foundation, you're now ready to delve deeper into Rust programming. Explore more complex projects, integrate additional libraries, and continue building your skills. Happy coding!
+3. **Verify success:**  
+   You should see **Hello, World!** in your terminal.
 
 ---
-
-> **Tip:** As you advance, consider exploring Rust's powerful features such as ownership, lifetimes, and concurrency to harness the full potential of the language.
-
