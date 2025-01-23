@@ -181,8 +181,7 @@ Time for the exciting part—building and running your Rust code.
     cargo build
     ```
 
-    !!! note
-        The compiled output goes to `target/debug/hello_rust` by default.
+
 
 2. **Run the project:**
 
