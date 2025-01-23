@@ -1,5 +1,6 @@
 # Setting up a Dev Container for Rust
 * Primary author: [Nandan Mogili](https://github.com/nandanmogili)
+* Reviewer: [<Aaron Patel>](https://github.com/arpatell)
 
 
 
